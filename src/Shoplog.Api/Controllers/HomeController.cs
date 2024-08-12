@@ -1,16 +1,23 @@
-using System.Data;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 
 namespace Shoplog.Api.Controllers;
 
 [ApiController]
 [Route("/")]
-public sealed class HomeController(ILogger<HomeController> logger) : ControllerBase
+public sealed class HomeController : ControllerBase
 {
+    private readonly ILogger<HomeController> _logger;
+
+    public HomeController(ILogger<HomeController> logger)
+    {
+        _logger = logger;
+    }
+
     [HttpGet]
     public IActionResult Get()
     {
-        logger.LogInformation("Home controller called");
+        _logger.LogInformation("Home controller called");
         return Ok("Shoplog API");
     }
 }
