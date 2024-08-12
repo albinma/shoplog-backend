@@ -33,11 +33,13 @@ msbuild.wrn
 # Visual Studio 2015
 .vs/
 
-# Env
-.env
-.env.*
-!.env.example
-!.env.test
-
-# Docker
+# Custom
+.circleci/
 .docker/
+.husky/
+.vscode/
+.editorconfig
+.gitignore
+compose.yml
+LICENSE
+README.md

@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using Serilog;
+using Microsoft.EntityFrameworkCore;
 
 namespace Shoplog.Api.Controllers;
 
@@ -7,17 +7,20 @@ namespace Shoplog.Api.Controllers;
 [Route("/")]
 public sealed class HomeController : ControllerBase
 {
+    private readonly VpicDbContext _vpicDbContext;
     private readonly ILogger<HomeController> _logger;
 
-    public HomeController(ILogger<HomeController> logger)
+    public HomeController(VpicDbContext vpicDbContext, ILogger<HomeController> logger)
     {
-        _logger = logger;
+        _vpicDbContext = vpicDbContext ?? throw new ArgumentNullException(nameof(vpicDbContext));
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
     [HttpGet]
-    public IActionResult Get()
+    public async Task<IActionResult> Get()
     {
         _logger.LogInformation("Home controller called");
-        return Ok("Shoplog API");
+        var makes = await _vpicDbContext.Makes.ToListAsync();
+        return Ok(makes);
     }
 }

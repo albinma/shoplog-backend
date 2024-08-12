@@ -1,0 +1,6 @@
+﻿public partial class EngineConfiguration
+{
+    public int Id { get; set; }
+
+    public string Name { get; set; } = null!;
+}

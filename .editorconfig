@@ -246,3 +246,6 @@ dotnet_naming_style.private_variable.required_prefix = _
 dotnet_naming_style.private_variable.required_suffix =
 dotnet_naming_style.private_variable.word_separator =
 dotnet_naming_style.private_variable.capitalization = camel_case
+
+# CA1050: Declare types in namespaces
+dotnet_diagnostic.CA1050.severity = silent
