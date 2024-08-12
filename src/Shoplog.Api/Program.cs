@@ -1,6 +1,38 @@
-var builder = WebApplication.CreateBuilder(args);
-var app = builder.Build();
+using Serilog;
+using Serilog.Events;
 
-app.MapGet("/", () => "Hello World!");
+Log.Logger = new LoggerConfiguration()
+  .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+  .WriteTo.Console()
+  .CreateBootstrapLogger();
 
-app.Run();
+try
+{
+  Log.Information("Starting web host");
+
+  var builder = WebApplication.CreateBuilder(args);
+  builder.Services.AddSerilog(
+    (services, configuration) =>
+      configuration
+        .ReadFrom.Configuration(builder.Configuration)
+        .ReadFrom.Services(services)
+        .Enrich.FromLogContext()
+  );
+
+  builder.Services.AddCors();
+  builder.Services.AddControllers();
+
+  var app = builder.Build();
+  app.UseSerilogRequestLogging();
+  app.MapControllers();
+
+  app.Run();
+}
+catch (Exception ex)
+{
+  Log.Fatal(ex, "Host terminated unexpectedly");
+}
+finally
+{
+  Log.CloseAndFlush();
+}
