@@ -191,6 +191,11 @@ public partial class VpicDbContext : DbContext
 
     public virtual DbSet<WmiyearValidCharsCacheException> WmiyearValidCharsCacheExceptions { get; set; }
 
+    public override Task<int> SaveChangesAsync(
+        bool acceptAllChangesOnSuccess,
+        CancellationToken cancellationToken = default
+    ) => throw new NotSupportedException("This context is read-only.");
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Ab>(entity =>
